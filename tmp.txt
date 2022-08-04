@@ -1,0 +1,200 @@
+//Basic Syntax
+DECLARE
+    message varchar2(20):='Department of CSE';
+BEGIN
+    dbms_output.put_line(message);
+END;
+
+//PL/SQL Block Example
+DECLARE
+    a integer := 10;
+    b integer := 20;
+    c integer;
+    f real;
+BEGIN
+    c := a + b;
+    dbms_output.put_line('Value of c: ' || c);
+    f := 70.0/3.0;
+    dbms_output.put_line('Value of f: ' || f);
+END;
+
+//If-Else Example
+DECLARE
+    a number(3) := 100;
+BEGIN
+    IF( a < 20 ) THEN
+        dbms_output.put_line('a is less than 20 ' );
+    ELSE
+        dbms_output.put_line('a is not less than 20 ' );
+    END IF;
+    dbms_output.put_line('value of a is : ' || a);
+END;
+
+//Basic Loop
+DECLARE
+	x number := 10;
+BEGIN
+    LOOP
+	dbms_output.put_line(x);
+        x := x + 10;
+        IF x > 50 THEN
+            exit;
+        END IF;
+    END LOOP;
+    dbms_output.put_line('After Exit x is: ' || x);
+END;
+
+//Basic Loop1
+DECLARE
+	x number := 10;
+BEGIN
+    LOOP
+        dbms_output.put_line(x);
+        x := x + 10;
+        exit WHEN x > 50;
+    END LOOP;
+    dbms_output.put_line('After Exit x is: ' || x);
+END;
+
+//For Loop
+DECLARE
+    i number(1);
+    j number(1);
+BEGIN
+    << outer_loop >>
+    FOR i IN 1..3 LOOP
+        << inner_loop >>
+        FOR j IN 1..3 LOOP
+            dbms_output.put_line('i is: '|| i || ' and j is: ' || j);
+        END loop inner_loop;
+    END loop outer_loop;
+END;
+
+
+//while loop
+DECLARE
+    a number(2) := 10;
+BEGIN
+    WHILE a < 20 LOOP
+        dbms_output.put_line('value of a: ' || a);
+        a := a + 1;
+    END LOOP;
+END;
+
+
+//Array 
+DECLARE
+    type namesarray IS VARRAY(5) OF VARCHAR2(10);
+    type grades IS VARRAY(5) OF INTEGER;
+    names namesarray;
+    marks grades;
+    total integer;
+BEGIN
+    names := namesarray('Kavita', 'Pritam', 'Ayan', 'Rishav', 'Aziz');
+    marks:= grades(98, 97, 78, 87, 92);
+    total := names.count;
+    dbms_output.put_line('Total '|| total || ' Students');
+    FOR i in 1 .. total LOOP
+        dbms_output.put_line('Student: ' || names(i) || 'Marks: ' || marks(i));
+    END LOOP;
+END;
+
+//Procedure Example
+CREATE OR REPLACE PROCEDURE greetings AS
+BEGIN
+    dbms_output.put_line('Hello World!');
+END;
+
+//Procedure Example1
+DECLARE
+    a number;
+    b number;
+    c number;
+PROCEDURE findMin(x IN number, y IN number, z OUT number) IS
+    BEGIN
+        IF x < y THEN
+     	    z:= x;
+        ELSE
+            z:= y;
+        END IF;
+    END;
+    
+BEGIN
+    a:= 23;
+    b:= 45;
+    findMin(a, b, c);
+    dbms_output.put_line(' Minimum of (23, 45) : ' || c);
+END;
+
+
+//Function Example
+CREATE OR REPLACE FUNCTION totalCustomers
+RETURN number IS
+    total number(2) := 0;
+BEGIN
+    SELECT count(*) into total
+    FROM Emp;
+    RETURN total;
+END;
+
+
+//Function call example
+DECLARE
+    c number(2);
+    FUNCTION totalCustomers RETURN number IS
+        total number(2) := 0;
+        BEGIN
+            SELECT count(*) into total
+            FROM Emp;
+            RETURN total;
+        END;
+BEGIN
+    c := totalCustomers();
+    dbms_output.put_line('Total no. of Customers: ' || c);
+END;
+
+
+//Function example1
+DECLARE
+    a number;
+    b number;
+    c number;
+FUNCTION findMax(x IN number, y IN number) RETURN number IS
+    z number;
+    BEGIN
+        IF x > y THEN
+            z:= x;
+        ELSE
+            Z:= y;
+        END IF;
+        RETURN z;
+    END;
+
+BEGIN
+    a:= 23;
+    b:= 45;
+    c := findMax(a, b);
+    dbms_output.put_line(' Maximum of (23,45): ' || c);
+END;
+
+//Recursive Function example
+DECLARE
+    num number;
+    factorial number;
+    
+FUNCTION fact(x number) RETURN number IS
+    f number;
+    BEGIN
+        IF x=0 THEN
+            f := 1;
+        ELSE
+            f := x * fact(x-1);
+        END IF;
+        RETURN f;
+    END;
+    
+BEGIN
+    num:= 6;
+    factorial := fact(num);
+    dbms_output.put_line(' Factorial '|| num || ' is ' || factorial);
+END;
