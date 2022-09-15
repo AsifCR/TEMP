@@ -1,0 +1,71 @@
+1)CREATE table Dept_078 as(
+select *
+from dept
+);
+
+
+2)create table dept_log_078(
+    deptno int,
+dname VARCHAR2(100),
+Operation VARCHAR2(100)
+    );
+
+
+create or replace trigger tr
+after insert or delete on Dept_078
+for each row
+DECLARE
+ v_oper VARCHAR2(10);
+ v_deptno int;
+ v_dname varchar2(20);
+ 
+begin
+    if deleting then
+    v_oper:='Delete';
+    end if;
+    if inserting then
+    v_oper:='insert';
+    end if;
+    v_deptno:=:old.deptno;
+    v_dname:=:old.dname;
+    
+
+insert into dept_log_078 values(v_deptno,v_dname,v_oper);
+
+end;
+
+
+
+???????????????????????????????????????????????????????????????????????????????
+
+
+CREATE TABLE DEPT_194058 AS(SELECT * FROM DEPT);
+
+SELECT * FROM DEPT_194058
+
+CREATE TABLE DEPT_LOG_194058(
+    Deptno    NUMBER(2) NOT NULL,
+    dname varchar2(30),
+    operation varchar2(20)
+);
+
+CREATE OR REPLACE TRIGGER tr_dept_194058
+AFTER INSERT OR DELETE OR UPDATE ON dept_194058
+FOR EACH ROW
+ENABLE
+BEGIN
+    IF INSERTING THEN
+        INSERT INTO DEPT_LOG_194058(deptno, dname, operation) VALUES(:new.deptno,:new.dname, 'Insert');
+    ELSIF DELETING THEN
+        INSERT INTO DEPT_LOG_194058(deptno, dname, operation) VALUES(:old.deptno,:old.dname, 'Delet');
+    END IF;
+END;
+
+INSERT INTO DEPT_194058(deptno, dname, operation) VALUES(50,'CSE','OLD Building');
+
+DELETE  FROM dept_194058 WHERE deptno = 50;
+ 
+SELECT * FROM DEPT_LOG_194058;
+
+DROP TRIGGER tr_dept_194058;
+
